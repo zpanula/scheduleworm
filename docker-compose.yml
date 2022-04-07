@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  scheduleworm:
+    image: scheduleworm
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      MONGO_CONNSTRING: "mongodb://mongodb"
+    ports:
+      - 3000:3000
+    networks:
+      - chorechart
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - chorechart
+    volumes:
+      - db:/data/db
+
+networks:
+  chorechart:
+
+volumes:
+  db:
