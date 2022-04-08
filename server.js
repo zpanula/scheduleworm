@@ -14,5 +14,6 @@ app.get('/', (req, res) => {
   res.render('pages/index');
 });
 
-const port = process.env.PORT || 3000;
+const { API_PORT } = process.env;
+const port = process.env.PORT || API_PORT;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
