@@ -5,7 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
+    "lint": "eslint . --ext .js",
+    "test": "npm run lint && jest",
     "start": "node server.js"
   },
   "repository": {
@@ -25,6 +27,13 @@
     "mongoose": "^6.2.10"
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "onchange": "^7.1.0",
+    "prettier": "^2.6.2"
   }
 }
