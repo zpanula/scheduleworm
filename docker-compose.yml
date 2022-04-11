@@ -1,4 +1,4 @@
-version: "3.4"
+version: '3.4'
 
 services:
   scheduleworm:
@@ -8,8 +8,9 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
-      MONGO_URI: "mongodb://mongodb"
+      MONGO_URI: 'mongodb://mongodb'
       API_PORT: 3000
+      API_SECRET_KEY: 'secret'
     ports:
       - 3000:3000
     networks:
