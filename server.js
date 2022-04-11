@@ -2,9 +2,9 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import users from './routes/users.js';
 import 'dotenv/config';
-import { connect } from './config/database.js';
+import connectMongoose from './config/database.js';
 
-const connection = connect();
+connectMongoose();
 const app = express();
 
 app.use(cookieParser());

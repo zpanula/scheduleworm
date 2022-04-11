@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { MONGO_URI } = process.env;
 
-export function connect() {
+export default function connectMongoose() {
   mongoose
     .connect(MONGO_URI, {
       useNewUrlParser: true,
