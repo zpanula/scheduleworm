@@ -14,19 +14,19 @@ services:
     ports:
       - 3000:3000
     networks:
-      - chorechart
+      - scheduleworm
 
   mongodb:
     image: mongo
     ports:
       - 27017:27017
     networks:
-      - chorechart
+      - scheduleworm
     volumes:
       - db:/data/db
 
 networks:
-  chorechart:
+  scheduleworm:
 
 volumes:
   db:
