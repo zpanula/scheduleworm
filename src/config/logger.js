@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import pino from 'pino';
 
 const streams = [

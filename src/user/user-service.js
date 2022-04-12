@@ -2,7 +2,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User } from './user-model.js';
 
-async function generateHash(password) {
+export async function generateHash(password) {
+  if (!password) throw new Error('Password required.');
+
   const salt = await bcrypt.genSalt(10);
   return bcrypt.hash(password, salt);
 }
@@ -40,7 +42,9 @@ export async function readAll() {
   }
 }
 
-function generateAuthToken(user) {
+export function generateAuthToken(user) {
+  if (!user) throw new Error('User required.');
+
   const token = jwt.sign(
     { _id: user._id, email: user.email },
     process.env.API_SECRET_KEY
