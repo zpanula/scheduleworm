@@ -1,6 +1,6 @@
-import express from 'express';
-import { validateNewUser } from '../user-model.js';
-import { read, create, login } from '../user-service.js';
+const express = require('express');
+const { validateNewUser } = require('../user-model.js');
+const { read, create, login } = require('../user-service.js');
 
 const router = express.Router();
 
@@ -44,4 +44,4 @@ router.get('/logout', (req, res) =>
   res.clearCookie('access_token').send('Successfully logged out.')
 );
 
-export default router;
+module.exports = router;

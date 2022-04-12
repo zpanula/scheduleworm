@@ -1,7 +1,7 @@
-import express from 'express';
-import { validateUser } from './user-model.js';
-import auth from '../middleware/auth.js';
-import { read, readAll, remove, update } from './user-service.js';
+const express = require('express');
+const { validateUser } = require('./user-model.js');
+const auth = require('../middleware/auth.js');
+const { read, readAll, remove, update } = require('./user-service.js');
 
 const router = express.Router();
 
@@ -43,4 +43,5 @@ router.put('/', auth, async (req, res) => {
 
   return res.send('Password successfully changed.');
 });
-export default router;
+
+module.exports = router;

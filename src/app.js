@@ -1,12 +1,12 @@
 /* istanbul ignore file */
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import accounts from './user/auth/auth-handlers.js';
-import users from './user/user-handlers.js';
-import 'dotenv/config';
-import connectMongoose from './config/database.js';
-import logger from './config/logger.js';
-import error from './middleware/error.js';
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const accounts = require('./user/auth/auth-handlers.js');
+const users = require('./user/user-handlers.js');
+require('dotenv/config');
+const connectMongoose = require('./config/database.js');
+const logger = require('./config/logger.js');
+const error = require('./middleware/error.js');
 
 process.on('uncaughtException', (err) => {
   logger.error(err);
@@ -36,3 +36,5 @@ app.get('/', (req, res) => {
 
 const port = process.env.API_PORT || 3000;
 app.listen(port, () => logger.info(`Listening on port ${port}...`));
+
+module.exports.app = app;

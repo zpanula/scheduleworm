@@ -1,15 +1,15 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { User } from './user-model.js';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { User } = require('./user-model.js');
 
-export async function generateHash(password) {
+async function generateHash(password) {
   if (!password) throw new Error('Password required.');
 
   const salt = await bcrypt.genSalt(10);
   return bcrypt.hash(password, salt);
 }
 
-export async function create(email, password) {
+async function create(email, password) {
   const user = new User(email, password);
   user.password = await generateHash(user.password);
 
@@ -22,7 +22,7 @@ export async function create(email, password) {
   }
 }
 
-export async function read(email) {
+async function read(email) {
   try {
     const user = await User.findOne({ email }).select('email isAdmin');
     return user;
@@ -32,7 +32,7 @@ export async function read(email) {
   }
 }
 
-export async function readAll() {
+async function readAll() {
   try {
     const users = await User.find().select('email isAdmin');
     return users;
@@ -42,7 +42,7 @@ export async function readAll() {
   }
 }
 
-export function generateAuthToken(user) {
+function generateAuthToken(user) {
   if (!user) throw new Error('User required.');
 
   const token = jwt.sign(
@@ -52,7 +52,7 @@ export function generateAuthToken(user) {
   return token;
 }
 
-export async function login(email, password) {
+async function login(email, password) {
   const user = await User.findOne({ email });
 
   const validPassword = await bcrypt.compare(password, user.password); // TODO: Clarify variable names
@@ -61,12 +61,12 @@ export async function login(email, password) {
   return generateAuthToken(user);
 }
 
-export async function remove(email) {
+async function remove(email) {
   const result = await User.deleteOne({ email });
   return result;
 }
 
-export async function update(email, newPassword) {
+async function update(email, newPassword) {
   await User.findOneAndUpdate(
     { email },
     {
@@ -74,3 +74,12 @@ export async function update(email, newPassword) {
     }
   );
 }
+
+module.exports = {
+  create,
+  read,
+  readAll,
+  login,
+  remove,
+  update,
+};

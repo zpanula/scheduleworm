@@ -1,5 +1,5 @@
-import Joi from 'joi';
-import mongoose from 'mongoose';
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 // TODO: Improve the naming or separation of this validation.
 
@@ -38,4 +38,4 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-export { validateNewUser, validateUser };
+module.exports = { validateNewUser, validateUser, User };

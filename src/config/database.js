@@ -1,10 +1,11 @@
 /* istanbul ignore file */
-import mongoose from 'mongoose';
-import logger from './logger.js';
+/* istanbul ignore file */
+const mongoose = require('mongoose');
+const logger = require('./logger.js');
 
 const { MONGO_URI } = process.env;
 
-export default function connectMongoose() {
+function connectMongoose() {
   mongoose
     .connect(MONGO_URI, {
       useNewUrlParser: true,
@@ -18,3 +19,5 @@ export default function connectMongoose() {
       process.exit(1);
     });
 }
+
+module.exports = connectMongoose;
