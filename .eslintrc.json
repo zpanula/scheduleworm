@@ -13,12 +13,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-console": 0,
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allowAfterThis": true
-      }
-    ],
+    "no-underscore-dangle": 0,
     "import/extensions": ["error", "always", { "ignorePackages": true }]
   }
 }
