@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import logger from './logger.js';
 
 const { MONGO_URI } = process.env;
 
@@ -9,11 +10,10 @@ export default function connectMongoose() {
       useUnifiedTopology: true,
     })
     .then(() => {
-      console.log('Connected to MongoDB');
+      logger.info('Connected to MongoDB');
     })
     .catch((error) => {
-      console.log('Database connection failed.');
-      console.error(error);
+      logger.error(error);
       process.exit(1);
     });
 }
