@@ -7,11 +7,26 @@
   "scripts": {
     "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
     "lint": "eslint . --ext .js",
-    "test": "npm run lint && node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "run-s -c lint jest test:badges",
+    "test:badges": "node node_modules/make-coverage-badge/cli.js",
+    "jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "start": "node src/app.js"
   },
   "jest": {
-    "transform": {}
+    "transform": {},
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 80
+      }
+    },
+    "coverageReporters": [
+      "json-summary",
+      "text"
+    ]
   },
   "repository": {
     "type": "git",
@@ -45,6 +60,9 @@
     "gen-env-example": "^0.0.0",
     "gen-env-template": "^2.0.6",
     "jest": "^27.5.1",
+    "jest-coverage-badges": "^1.0.0",
+    "make-coverage-badge": "^1.2.0",
+    "npm-run-all": "^4.1.5",
     "onchange": "^7.1.0",
     "pino-pretty": "^7.6.1",
     "prettier": "^2.6.2",
