@@ -19,7 +19,9 @@ const userSchema = new mongoose.Schema({
 
 export const User = mongoose.model('User', userSchema);
 
-function validateUser(user) {
+// TODO: Improve the naming or separation of this validation.
+
+function validateNewUser(user) {
   const schema = Joi.object({
     email: Joi.string().min(5).max(255).required().email(),
     password: Joi.string().min(5).max(255).required(),
@@ -28,4 +30,12 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-export { validateUser as validate };
+function validateUser(user) {
+  const schema = Joi.object({
+    email: Joi.string().min(5).max(255).required().email(),
+  });
+
+  return schema.validate(user);
+}
+
+export { validateNewUser, validateUser };
