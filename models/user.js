@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import mongoose from 'mongoose';
 
@@ -17,14 +16,6 @@ const userSchema = new mongoose.Schema({
     maxlength: 1024,
   },
 });
-
-userSchema.methods.generateAuthToken = function generateAuthToken() {
-  const token = jwt.sign(
-    { _id: this._id, email: this.email },
-    process.env.API_SECRET_KEY
-  );
-  return token;
-};
 
 export const User = mongoose.model('User', userSchema);
 
