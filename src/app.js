@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import accounts from './user/auth/auth-handlers.js';
 import users from './user/user-handlers.js';
 import 'dotenv/config';
 import connectMongoose from './config/database.js';
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+app.use(accounts);
 app.use('/user', users);
 app.use(error);
 
