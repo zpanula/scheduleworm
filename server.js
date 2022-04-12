@@ -1,6 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import users from './routes/users.js';
+import users from './user/user-handlers.js';
 import 'dotenv/config';
 import connectMongoose from './config/database.js';
 import logger from './config/logger.js';
