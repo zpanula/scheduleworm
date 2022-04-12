@@ -1,11 +1,11 @@
 import express from 'express';
-import { validate } from '../user-model.js';
+import { validateNewUser } from '../user-model.js';
 import { read, create, login } from '../user-service.js';
 
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validateNewUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const { email, password } = req.body;
@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validateNewUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const user = await read(req.body.email);
