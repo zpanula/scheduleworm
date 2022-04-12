@@ -30,7 +30,8 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^6.2.10"
+    "mongoose": "^6.2.10",
+    "pino": "^7.10.0"
   },
   "devDependencies": {
     "eslint": "^8.13.0",
@@ -42,6 +43,7 @@
     "gen-env-template": "^2.0.6",
     "jest": "^27.5.1",
     "onchange": "^7.1.0",
+    "pino-pretty": "^7.6.1",
     "prettier": "^2.6.2"
   }
 }
