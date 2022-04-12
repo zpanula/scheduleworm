@@ -1,8 +1,7 @@
-import bcrypt from 'bcrypt';
-import _ from 'lodash';
 import express from 'express';
 import { User, validate } from '../models/user.js';
 import auth from '../middleware/auth.js';
+import { read, create, login } from '../services/user-service.js';
 
 const router = express.Router();
 
@@ -10,14 +9,17 @@ router.post('/register', async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let user = await User.findOne({ email: req.body.email });
+  const { email, password } = req.body;
+
+  const user = await read(email);
   if (user) return res.status(400).send('User already registered.');
 
-  user = new User(_.pick(req.body, ['email', 'password']));
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(user.password, salt);
-  await user.save();
-
+  try {
+    await create({ email, password });
+  } catch (ex) {
+    console.log(ex.message);
+    res.status(500).send('Account creation failed.');
+  }
   return res.send('Account successfully created.');
 });
 
@@ -28,17 +30,18 @@ router.post('/login', async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).send('Invalid email or password.');
 
-  const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).send('Invalid email or password.');
+  try {
+    const token = login(req.body.email, req.body.password);
 
-  const token = user.generateAuthToken();
-
-  return res
-    .cookie('access_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    })
-    .send('Logged in successfully.');
+    return res
+      .cookie('access_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      })
+      .send('Logged in successfully.');
+  } catch (ex) {
+    return res.status(400).send('Invalid email or password.');
+  }
 });
 
 router.get('/protected', auth, (req, res) =>
