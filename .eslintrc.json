@@ -9,7 +9,6 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "ignorePatterns": ["bootstrap*"],
   "rules": {
     "prettier/prettier": "error",
     "no-console": 0,
