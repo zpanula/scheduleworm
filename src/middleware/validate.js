@@ -8,7 +8,7 @@ const validateBody = (schema) => (req, res, next) => {
     const errorMessage = error.details
       .map((details) => details.message)
       .join(', ');
-    logger.error(errorMessage);
+    logger.error({ body: req.body, error: errorMessage });
     return res.status(400).send(errorMessage);
   }
 
