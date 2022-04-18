@@ -7,25 +7,18 @@ import { read, readAll, remove, update } from './user-service.js';
 const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
+  if (req.body.email) {
+    const user = await read(req.body.email);
+    if (!user) return res.status(400).send('User does not exist.');
+    return res.send(user);
+  }
+
   const users = await readAll();
 
   return res.send(users);
 });
 
-router.get('/:email', validate(userSchema), auth, async (req, res) => {
-  // const { error } = validateUser(req.params);
-  // if (error) return res.status(400).send(error.details[0].message);
-
-  const user = await read(req.params.email);
-  if (!user) return res.status(400).send('User does not exist.');
-
-  return res.send(user);
-});
-
 router.delete('/', validate(userSchema), auth, async (req, res) => {
-  // const { error } = validateUser(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
-
   const user = await read(req.body.email);
   if (!user) return res.status(400).send('User does not exist.');
 
@@ -34,9 +27,6 @@ router.delete('/', validate(userSchema), auth, async (req, res) => {
 });
 
 router.put('/', validate(userSchema), auth, async (req, res) => {
-  // const { error } = validateUser(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
-
   const user = await read(req.body.email);
   if (!user) return res.status(400).send('User does not exist.');
 
