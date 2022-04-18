@@ -1,11 +1,17 @@
 import express from 'express';
 import { validateUser } from './user-model.js';
 import auth from '../middleware/auth.js';
-import { read, remove, update } from './user-service.js';
+import { read, readAll, remove, update } from './user-service.js';
 
 const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
+  const users = await readAll();
+
+  return res.send(users);
+});
+
+router.get('/:email', auth, async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 

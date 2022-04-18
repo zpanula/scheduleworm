@@ -22,8 +22,18 @@ export async function create(email, password) {
 
 export async function read(email) {
   try {
-    const user = await User.findOne({ email }).select('-password');
+    const user = await User.findOne({ email }).select('email isAdmin');
     return user;
+  } catch (ex) {
+    console.log(ex.message);
+    return ex;
+  }
+}
+
+export async function readAll() {
+  try {
+    const users = await User.find().select('email isAdmin');
+    return users;
   } catch (ex) {
     console.log(ex.message);
     return ex;
