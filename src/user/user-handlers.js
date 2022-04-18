@@ -1,6 +1,7 @@
 import express from 'express';
-import { validateUser } from './user-model.js';
+import { userSchema } from './user-model.js';
 import auth from '../middleware/auth.js';
+import validate from '../middleware/validate.js';
 import { read, readAll, remove, update } from './user-service.js';
 
 const router = express.Router();
@@ -11,9 +12,9 @@ router.get('/', auth, async (req, res) => {
   return res.send(users);
 });
 
-router.get('/:email', auth, async (req, res) => {
-  const { error } = validateUser(req.params);
-  if (error) return res.status(400).send(error.details[0].message);
+router.get('/:email', validate(userSchema), auth, async (req, res) => {
+  // const { error } = validateUser(req.params);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   const user = await read(req.params.email);
   if (!user) return res.status(400).send('User does not exist.');
@@ -21,9 +22,9 @@ router.get('/:email', auth, async (req, res) => {
   return res.send(user);
 });
 
-router.delete('/', auth, async (req, res) => {
-  const { error } = validateUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+router.delete('/', validate(userSchema), auth, async (req, res) => {
+  // const { error } = validateUser(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   const user = await read(req.body.email);
   if (!user) return res.status(400).send('User does not exist.');
@@ -32,9 +33,9 @@ router.delete('/', auth, async (req, res) => {
   return res.send('User deleted.');
 });
 
-router.put('/', auth, async (req, res) => {
-  const { error } = validateUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+router.put('/', validate(userSchema), auth, async (req, res) => {
+  // const { error } = validateUser(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   const user = await read(req.body.email);
   if (!user) return res.status(400).send('User does not exist.');
