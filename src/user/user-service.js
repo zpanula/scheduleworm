@@ -70,3 +70,10 @@ export async function update(email, newPassword) {
     }
   );
 }
+
+export async function hasPermission(email) {
+  const user = await User.find({ email });
+  if (!user) throw new Error('User does not exist.');
+
+  return user.isAdmin;
+}
