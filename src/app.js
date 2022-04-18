@@ -5,6 +5,7 @@ import users from './user/user-handlers.js';
 import 'dotenv/config';
 import connectMongoose from './config/database.js';
 import logger from './config/logger.js';
+import routeLogger from './middleware/logger.js';
 import error from './middleware/error.js';
 
 process.on('uncaughtException', (err) => {
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(express.static('./src/public'));
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
+app.use(routeLogger);
 app.use(accounts);
 app.use('/user', users);
 app.use(error);
