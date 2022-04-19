@@ -35,5 +35,5 @@ app.get('/', (req, res) => {
   res.render('pages/index');
 });
 
-const port = process.env.API_PORT || 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => logger.info(`Listening on port ${port}...`));
