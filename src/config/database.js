@@ -14,6 +14,6 @@ export default function connectMongoose() {
     })
     .catch((error) => {
       logger.error(error);
-      process.exit(1);
+      // process.exit(1);
     });
 }
