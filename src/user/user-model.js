@@ -1,9 +1,14 @@
 import Joi from 'joi';
 import mongoose from 'mongoose';
+import { nanoid } from 'nanoid';
 
 export const User = mongoose.model(
   'User',
   new mongoose.Schema({
+    _id: {
+      type: String,
+      default: () => nanoid(),
+    },
     email: {
       type: String,
       required: true,
