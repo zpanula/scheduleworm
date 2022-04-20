@@ -33,12 +33,12 @@ export async function create(email, password) {
 
 /**
  * Returns a single user
- * @param {string} email
+ * @param {string} _id
  * @return {Object}
  */
-export async function read(email) {
+export async function read(_id) {
   try {
-    const user = await User.findOne({ email }).select('email isAdmin');
+    const user = await User.findById(_id).select('_id email isAdmin');
     return user;
   } catch (ex) {
     console.log(ex.message);
@@ -52,7 +52,22 @@ export async function read(email) {
  */
 export async function readAll() {
   try {
-    const users = await User.find().select('email isAdmin');
+    const users = await User.find().select('_id email isAdmin');
+    return users;
+  } catch (ex) {
+    console.log(ex.message);
+    return ex;
+  }
+}
+
+/**
+ * Returns a single user by user's email
+ * @param {string} email
+ * @return {Object}
+ */
+export async function readByEmail(email) {
+  try {
+    const users = await User.find({ email }).select('_id email isAdmin');
     return users;
   } catch (ex) {
     console.log(ex.message);
@@ -93,8 +108,8 @@ export async function login(email, password) {
  * @param {string} email - User's email
  * @return {Object}
  */
-export async function remove(email) {
-  const result = await User.deleteOne({ email });
+export async function remove(_id) {
+  const result = await User.findByIdAndDelete(_id);
   return result;
 }
 
@@ -119,7 +134,7 @@ export async function update(email, newPassword) {
  * @return {boolean}
  */
 export async function hasPermission(email) {
-  const user = await User.find({ email });
+  const user = await User.findOne({ email });
   if (!user) throw new Error('User does not exist.');
 
   return user.isAdmin;
