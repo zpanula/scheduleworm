@@ -1,5 +1,7 @@
-<div class="container-fluid">
-  <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
+<nav
+  class="navbar navbar-light navbar-expand bg-light navigation-clean d-flex justify-space-between"
+>
+  <div class="container-fluid">
     <a class="navbar-brand" href="#"
       ><img
         class="mx-2"
@@ -9,24 +11,27 @@
       />
       ScheduleWORM
     </a>
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#loginModal"
-    >
-      Sign in
-    </button>
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#registerModal"
-    >
-      Register
-    </button>
-  </nav>
-</div>
+
+    <div id="navbtns">
+      <button
+        type="button"
+        class="btn btn-primary mx-2"
+        data-bs-toggle="modal"
+        data-bs-target="#loginModal"
+      >
+        Sign in
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary mx-2"
+        data-bs-toggle="modal"
+        data-bs-target="#registerModal"
+      >
+        Register
+      </button>
+    </div>
+  </div>
+</nav>
 
 <div
   class="modal fade"
