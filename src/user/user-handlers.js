@@ -7,8 +7,8 @@ import { read, readAll, remove, update } from './user-service.js';
 const router = express.Router();
 
 router.get('/', authenticate, authorize, async (req, res) => {
-  if (req.body._id) {
-    const user = await read(req.body._id);
+  if (req.body.username) {
+    const user = await read(req.body.username);
     if (!user) return res.status(400).send('User does not exist.');
     return res.send(user);
   }
@@ -24,10 +24,10 @@ router.delete(
   authenticate,
   authorize,
   async (req, res) => {
-    const user = await read(req.body._id);
-    if (!user) return res.status(400).send('User does not exist.');
+    const user = await read(req.body.username);
+    if (user === null) return res.status(400).send('User does not exist.');
 
-    await remove(req.body._id);
+    await remove(req.body.username);
     return res.send('User deleted.');
   }
 );
@@ -38,10 +38,10 @@ router.put(
   authenticate,
   authorize,
   async (req, res) => {
-    const user = await read(req.body._id);
+    const user = await read(req.body.username);
     if (!user) return res.status(400).send('User does not exist.');
 
-    await update(req.body.email, req.body.password);
+    await update(req.body.username, req.body.password);
 
     return res.send('Password successfully changed.');
   }

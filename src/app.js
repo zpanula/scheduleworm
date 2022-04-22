@@ -1,9 +1,9 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import sequelize from './config/database.js';
 import accounts from './user/auth/auth-handlers.js';
 import users from './user/user-handlers.js';
 import 'dotenv/config';
-import connectMongoose from './config/database.js';
 import logger from './config/logger.js';
 import routeLogger from './middleware/logger.js';
 import error from './middleware/error.js';
@@ -18,7 +18,11 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-connectMongoose();
+await sequelize
+  .authenticate()
+  .then(logger.info('Connected to SQLite.'))
+  .catch((err) => logger.error('Unable to connect to the database', err));
+
 const app = express();
 
 app.use(cookieParser());
