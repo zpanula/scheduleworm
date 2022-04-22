@@ -2,8 +2,9 @@
 
 Please, go through these steps before you submit a PR.
 
-1. Make sure that your PR is not a duplicate.
-2. If not, then make sure that:
+1. Your pull request **must** be tied to an issue.
+2. Make sure that your PR is not a duplicate.
+3. If not, then make sure that:
 
    a. You have done your changes in a separate branch. Branches MUST have descriptive names that reference an open issue. Good examples are: `SW12-signin_issue` or `SW18-issue_templates`.
 
@@ -13,7 +14,7 @@ Please, go through these steps before you submit a PR.
 
    d. `npm test` doesn't throw any error. If it does, fix them first and amend your commit (`git commit --amend`).
 
-3. **After** these steps, you're ready to open a pull request.
+4. **After** these steps, you're ready to open a pull request.
 
    a. Your pull request MUST NOT target the `main` branch on this repository. You probably want to target `staging` instead.
 
