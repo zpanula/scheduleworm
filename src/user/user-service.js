@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from './user-model.js';
+import User from './user-model.js';
+import logger from '../config/logger.js';
 
 /**
  * Generates a hash from a string
@@ -18,30 +19,34 @@ async function generateHash(password) {
  * @param {string} password
  * @return {Object}
  */
-export async function create(email, password) {
-  const user = new User(email, password);
+export async function create(username, email, password) {
+  const user = User.build({ username, email, password });
   user.password = await generateHash(user.password);
 
   try {
     await user.save();
+    logger.info(`Created user ${username} : ${email}`);
     return user;
   } catch (ex) {
-    console.log(ex.message);
+    logger.error(ex.message);
     return ex;
   }
 }
 
 /**
  * Returns a single user
- * @param {string} _id
+ * @param {string} id
  * @return {Object}
  */
-export async function read(_id) {
+export async function read(username) {
   try {
-    const user = await User.findById(_id).select('_id email isAdmin');
-    return user;
+    const user = await User.findOne({
+      where: { username },
+      attributes: ['id', 'username', 'email', 'isAdmin'],
+    }).catch(() => console.log('user not found'));
+    return user ?? null;
   } catch (ex) {
-    console.log(ex.message);
+    logger.error(ex.message);
     return ex;
   }
 }
@@ -52,25 +57,31 @@ export async function read(_id) {
  */
 export async function readAll() {
   try {
-    const users = await User.find().select('_id email isAdmin');
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'email', 'isAdmin'],
+    });
+    logger.debug('Read all users', users);
     return users;
   } catch (ex) {
-    console.log(ex.message);
+    logger.error(ex.message);
     return ex;
   }
 }
 
 /**
- * Returns a single user by user's email
- * @param {string} email
+ * Returns a single user
+ * @param {string} username
  * @return {Object}
  */
 export async function readByEmail(email) {
   try {
-    const users = await User.find({ email }).select('_id email isAdmin');
-    return users;
+    const user = await User.findOne({
+      where: { email },
+      attributes: ['id', 'username', 'email', 'isAdmin'],
+    });
+    return user;
   } catch (ex) {
-    console.log(ex.message);
+    logger.error(ex.message);
     return ex;
   }
 }
@@ -82,60 +93,65 @@ export async function readByEmail(email) {
  */
 function generateAuthToken(user) {
   const token = jwt.sign(
-    { _id: user._id, email: user.email },
+    { id: user.id, username: user.username },
     process.env.API_SECRET_KEY
   );
+  logger.debug('Generated new JWT token.', token);
   return token;
 }
 
 /**
  * Authenticates a user
- * @param {string} email
+ * @param {string} username
  * @param {string} password
  * @return {string} - JWT token
  */
-export async function login(email, password) {
-  const user = await User.findOne({ email });
+export async function login(username, password) {
+  const user = await User.findOne({ where: { username } });
 
   const validPassword = await bcrypt.compare(password, user.password); // TODO: Clarify variable names
-  if (!validPassword) throw new Error('Invalid email or password.');
+  if (!validPassword) throw new Error('Invalid username or password.');
+  logger.info(`Successful login from ${user.username}`);
 
   return generateAuthToken(user);
 }
 
 /**
  * Deletes a user
- * @param {string} email - User's email
+ * @param {string} username - Username
  * @return {Object}
  */
-export async function remove(_id) {
-  const result = await User.findByIdAndDelete(_id);
-  return result;
+export async function remove(username) {
+  try {
+    return await User.destroy({ where: { username } });
+  } catch (ex) {
+    throw new Error(ex);
+  }
 }
 
 /**
  * Changes a user's password
- * @param {string} email
+ * @param {string} username
  * @param {string} newPassword
  * @return {Object}
  */
-export async function update(email, newPassword) {
-  await User.findOneAndUpdate(
-    { email },
-    {
-      password: await generateHash(newPassword),
-    }
+export async function update(username, newPassword) {
+  await User.update(
+    { password: await generateHash(newPassword) },
+    { where: { username } }
   );
+  logger.debug(`Changed password of ${username}`);
 }
 
 /**
  * Checks user authorization
- * @param {string} email
+ * @param {string} username
  * @return {boolean}
  */
-export async function hasPermission(email) {
-  const user = await User.findOne({ email });
-  if (!user) throw new Error('User does not exist.');
+export async function hasPermission(username) {
+  const user = await read(username);
+  if (!user) return false;
 
+  logger.debug(`Verified admin permission for ${user.username}`);
   return user.isAdmin;
 }
