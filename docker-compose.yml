@@ -8,25 +8,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
-      MONGO_URI: 'mongodb://mongodb'
       API_PORT: 3000
       API_SECRET_KEY: 'secret'
     ports:
       - 3000:3000
-    networks:
-      - scheduleworm
-
-  mongodb:
-    image: mongo
-    ports:
-      - 27017:27017
-    networks:
-      - scheduleworm
-    volumes:
-      - db:/data/db
-
-networks:
-  scheduleworm:
-
-volumes:
-  db:
