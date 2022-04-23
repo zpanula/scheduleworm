@@ -4,16 +4,6 @@ import User from './user-model.js';
 import logger from '../config/logger.js';
 
 /**
- * Generates a hash from a string
- * @param {string} password - The plaintext password
- * @return {string} - The hashed password
- */
-async function generateHash(password) {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
-}
-
-/**
  * Creates a new user
  * @param {string} email
  * @param {string} password
@@ -21,7 +11,6 @@ async function generateHash(password) {
  */
 export async function create(username, email, password) {
   const user = User.build({ username, email, password });
-  user.password = await generateHash(user.password);
 
   try {
     await user.save();
@@ -109,7 +98,7 @@ function generateAuthToken(user) {
 export async function login(username, password) {
   const user = await User.findOne({ where: { username } });
 
-  const validPassword = await bcrypt.compare(password, user.password); // TODO: Clarify variable names
+  const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) throw new Error('Invalid username or password.');
   logger.info(`Successful login from ${user.username}`);
 
@@ -136,10 +125,7 @@ export async function remove(username) {
  * @return {Object}
  */
 export async function update(username, newPassword) {
-  await User.update(
-    { password: await generateHash(newPassword) },
-    { where: { username } }
-  );
+  await User.update({ password: newPassword }, { where: { username } });
   logger.debug(`Changed password of ${username}`);
 }
 
