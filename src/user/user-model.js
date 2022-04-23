@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import bcrypt from 'bcrypt';
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import logger from '../config/logger.js';
@@ -41,7 +42,19 @@ export default User.init(
       defaultValue: true,
     },
   },
-  { sequelize }
+  {
+    sequelize,
+    hooks: {
+      beforeCreate: async (user) => {
+        const hashedPassword = await bcrypt.hash(
+          user.password,
+          bcrypt.genSaltSync(8)
+        );
+        // eslint-disable-next-line no-param-reassign
+        user.password = hashedPassword;
+      },
+    },
+  }
 );
 
 try {
