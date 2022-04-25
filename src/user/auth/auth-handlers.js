@@ -7,6 +7,25 @@ import AppError from '../../config/error.js';
 
 const router = express.Router();
 
+// TODO: DRY these routes
+
+router.post('/newuser', validate(registerSchema), async (req, res) => {
+  const { username, email, password } = req.body;
+  const user = await read(username);
+  if (user) return res.status(400).send('User already registered.');
+
+  try {
+    await create(username, email, password);
+  } catch (ex) {
+    throw new AppError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      'Account creation failed.'
+    );
+  }
+  // return res.send('Account successfully created.');
+  return res.redirect('/user');
+});
+
 router.post('/register', validate(registerSchema), async (req, res) => {
   const { username, email, password } = req.body;
   const user = await read(username);
@@ -21,7 +40,8 @@ router.post('/register', validate(registerSchema), async (req, res) => {
       'Account creation failed.'
     );
   }
-  return res.send('Account successfully created.');
+  // return res.send('Account successfully created.');
+  return res.redirect('/');
 });
 
 router.post('/login', validate(loginSchema), async (req, res) => {
