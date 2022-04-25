@@ -1,8 +1,10 @@
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
+import { StatusCodes } from 'http-status-codes';
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import logger from '../config/logger.js';
+import AppError from '../config/error.js';
 
 class User extends Model {}
 
@@ -61,7 +63,7 @@ try {
   await User.sync();
   logger.debug('User table (re)created.');
 } catch (err) {
-  logger.error('User table (re)creation failed.', err);
+  throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
 }
 
 export const userSchema = Joi.object({
