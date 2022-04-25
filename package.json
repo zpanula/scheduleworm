@@ -7,7 +7,7 @@
   "scripts": {
     "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
     "lint": "eslint . --ext .js",
-    "test": "npm run lint && jest",
+    "test": "npm run lint && jest --passWithNoTests",
     "start": "node src/app.js"
   },
   "repository": {
