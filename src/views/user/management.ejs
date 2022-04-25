@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <%- include('../partials/nav'); %>
+
+    <div class="container mt-5 mx-auto">
+      <button
+        type="button"
+        class="btn btn-primary mx-2"
+        data-bs-toggle="modal"
+        data-bs-target="#newUserModal"
+      >
+        New User
+      </button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Admin</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(function(user) { %> <%- include('show', { user }); %>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      class="modal fade"
+      id="newUserModal"
+      tabindex="-1"
+      aria-labelledby="newUserModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newUserModal">Create New User</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form action="/newuser" method="post">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  aria-describedby="usernameHelp"
+                  placeholder="Enter username"
+                />
+              </div>
+              <div class="form-group">
+                <label for="inputEmail">Email address</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                />
+              </div>
+              <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                />
+              </div>
+              <!-- <div class="form-group">
+              <label class="form-check-label" for="inputAdminCheck"
+                >Admin</label
+              >
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="inputAdminCheck"
+              /> -->
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  id="submitNewTask"
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer'); %>
+  </body>
+</html>
