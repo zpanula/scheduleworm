@@ -1,0 +1,12 @@
+<tr>
+  <td><%= user.username %></td>
+  <td><%= user.email %></td>
+  <td><%= user.isAdmin %></td>
+  <td>
+    <form action="/user/delete/<%= user.username %>" method="post">
+      <button type="submit" class="btn btn-danger">
+        <i class="far fa-trash-alt"></i>
+      </button>
+    </form>
+  </td>
+</tr>

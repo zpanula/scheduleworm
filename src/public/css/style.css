@@ -1,7 +1,8 @@
-* {
-  border: solid 1px red;
-}
-
 #navbtns {
   margin-right: 1vw;
+}
+
+td,
+th {
+  vertical-align: middle;
 }

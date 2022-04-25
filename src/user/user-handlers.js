@@ -9,45 +9,37 @@ import AppError from '../config/error.js';
 const router = express.Router();
 
 // TODO: DRY User queries
+// TODO: Add authentication middleware to the route
+// Currently removed for testing.
 
-router.get('/', authenticate, authorize, async (req, res) => {
-  if (req.body.username) {
-    const user = await read(req.body.username);
-    if (!user)
-      throw new AppError(StatusCodes.BAD_REQUEST, 'User does not exist.');
-    return res.send(user);
-  }
+// router.get('/', authenticate, authorize async (req, res) => {
+router.get('/', async (req, res) => {
   const users = await readAll();
-
-  return res.send(users);
+  res.render('user/management', { users });
 });
 
-router.delete(
-  '/',
-  validate(userSchema),
-  authenticate,
-  authorize,
-  async (req, res) => {
-    const user = await read(req.body.username);
-    if (user === null)
-      throw new AppError(StatusCodes.BAD_REQUEST, 'User does not exist.');
+router.get('/:username', authenticate, authorize, async (req, res) => {
+  const user = await read(req.params.username);
+  if (!user)
+    throw new AppError(StatusCodes.BAD_REQUEST, 'User does not exist.');
+  return res.send(user);
+});
 
-    await remove(req.body.username);
-    return res.send('User deleted.');
-  }
-);
+router.post('/delete/:username', async (req, res) => {
+  await remove(req.params.username);
+  return res.redirect('/user');
+});
 
 router.put(
-  '/',
+  '/:username',
   validate(userSchema),
   authenticate,
   authorize,
   async (req, res) => {
-    const user = await read(req.body.username);
+    const user = await read(req.params.username);
     if (!user)
       throw new AppError(StatusCodes.BAD_REQUEST, 'User does not exist.');
-
-    await update(req.body.username, req.body.password);
+    await update(req.params.username, req.params.password);
 
     return res.send('Password successfully changed.');
   }
