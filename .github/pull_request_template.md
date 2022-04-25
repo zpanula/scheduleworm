@@ -16,12 +16,10 @@ Please, go through these steps before you submit a PR.
 
 4. **After** these steps, you're ready to open a pull request.
 
-   a. Your pull request MUST NOT target the `main` branch on this repository. You probably want to target `staging` instead.
+   a. Give a descriptive title to your PR.
 
-   b. Give a descriptive title to your PR.
+   b. Provide a description of your changes.
 
-   c. Provide a description of your changes.
-
-   d. Put `Resolves #XXXX` in your comment to auto-close the issue that your PR resolves.
+   c. Put `Resolves #XXXX` in your comment to auto-close the issue that your PR resolves.
 
 **PLEASE REMOVE THIS TEMPLATE BEFORE SUBMITTING**
