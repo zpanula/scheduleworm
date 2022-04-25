@@ -1,5 +1,6 @@
 import Joi from 'joi';
-import logger from '../config/logger.js';
+import { StatusCodes } from 'http-status-codes';
+import AppError from '../config/error.js';
 
 const validateBody = (schema) => (req, res, next) => {
   const { value, error } = Joi.compile(schema).validate(req.body);
@@ -8,8 +9,7 @@ const validateBody = (schema) => (req, res, next) => {
     const errorMessage = error.details
       .map((details) => details.message)
       .join(', ');
-    logger.error({ body: req.body, error: errorMessage });
-    return res.status(400).send(errorMessage);
+    throw new AppError(StatusCodes.BAD_REQUEST, errorMessage);
   }
 
   Object.assign(req, value);

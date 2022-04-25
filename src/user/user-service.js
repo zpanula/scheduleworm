@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
 import User from './user-model.js';
 import logger from '../config/logger.js';
+import AppError from '../config/error.js';
 
 /**
  * Creates a new user
@@ -16,9 +18,8 @@ export async function create(username, email, password) {
     await user.save();
     logger.info(`Created user ${username} : ${email}`);
     return user;
-  } catch (ex) {
-    logger.error(ex.message);
-    return ex;
+  } catch (err) {
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
@@ -32,11 +33,10 @@ export async function read(username) {
     const user = await User.findOne({
       where: { username },
       attributes: ['id', 'username', 'email', 'isAdmin'],
-    }).catch(() => console.log('user not found'));
+    });
     return user ?? null;
-  } catch (ex) {
-    logger.error(ex.message);
-    return ex;
+  } catch (err) {
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
@@ -51,9 +51,8 @@ export async function readAll() {
     });
     logger.debug('Read all users', users);
     return users;
-  } catch (ex) {
-    logger.error(ex.message);
-    return ex;
+  } catch (err) {
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
@@ -69,9 +68,8 @@ export async function readByEmail(email) {
       attributes: ['id', 'username', 'email', 'isAdmin'],
     });
     return user;
-  } catch (ex) {
-    logger.error(ex.message);
-    return ex;
+  } catch (err) {
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
@@ -98,8 +96,12 @@ function generateAuthToken(user) {
 export async function login(username, password) {
   const user = await User.findOne({ where: { username } });
 
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) throw new Error('Invalid username or password.');
+  const validPassword = bcrypt.compare(password, user.password);
+  if (!validPassword)
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      'Invalid username or password.'
+    );
   logger.info(`Successful login from ${user.username}`);
 
   return generateAuthToken(user);
@@ -113,8 +115,8 @@ export async function login(username, password) {
 export async function remove(username) {
   try {
     return await User.destroy({ where: { username } });
-  } catch (ex) {
-    throw new Error(ex);
+  } catch (err) {
+    throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 

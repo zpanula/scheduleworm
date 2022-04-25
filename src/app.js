@@ -1,4 +1,5 @@
 import express from 'express';
+import { StatusCodes } from 'http-status-codes';
 import cookieParser from 'cookie-parser';
 import sequelize from './config/database.js';
 import accounts from './user/auth/auth-handlers.js';
@@ -6,16 +7,14 @@ import users from './user/user-handlers.js';
 import 'dotenv/config';
 import logger from './config/logger.js';
 import routeLogger from './middleware/logger.js';
-import error from './middleware/error.js';
+import handleError from './middleware/error-handler.js';
 
 process.on('uncaughtException', (err) => {
-  logger.error(err);
-  process.exit(1);
+  handleError(err);
 });
 
 process.on('unhandledRejection', (err) => {
-  logger.error(err);
-  process.exit(1);
+  handleError(err);
 });
 
 await sequelize
@@ -33,7 +32,12 @@ app.set('view engine', 'ejs');
 app.use(routeLogger);
 app.use(accounts);
 app.use('/user', users);
-app.use(error);
+app.use((req, res) => {
+  res.status(StatusCodes.NOT_FOUND).send('Not Found');
+});
+app.use(async (err, req, res) => {
+  await handleError(err, res);
+});
 
 app.get('/', (req, res) => {
   res.render('pages/index');
