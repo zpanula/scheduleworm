@@ -2,9 +2,7 @@ import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';
-import logger from '../config/logger.js';
-import AppError from '../config/error.js';
+import { AppError, sequelize, logger } from '../config/index.js';
 
 class User extends Model {}
 

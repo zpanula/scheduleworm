@@ -1,4 +1,4 @@
-import logger from '../config/logger.js';
+import { logger } from '../config/index.js';
 
 export default function routeLogger(req, res, next) {
   res.on('finish', () => {
