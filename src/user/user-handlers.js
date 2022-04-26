@@ -1,9 +1,10 @@
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { userSchema } from './user-model.js';
+import { authenticate, authorize } from '../middleware/auth.js';
+import validate from '../middleware/validate.js';
 import { read, readAll, remove, update } from './user-service.js';
-import { authenticate, authorize, validate } from '../middleware/index.js';
-import { AppError } from '../config/index.js';
+import AppError from '../config/error.js';
 
 const router = express.Router();
 

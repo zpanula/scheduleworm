@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
-import { AppError } from '../config/index.js';
+import AppError from '../config/error.js';
 
 const validateBody = (schema) => (req, res, next) => {
   const { value, error } = Joi.compile(schema).validate(req.body);

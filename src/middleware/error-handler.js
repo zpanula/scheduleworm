@@ -1,4 +1,4 @@
-import { logger } from '../config/index.js';
+import logger from '../config/logger.js';
 
 export default function handleError(err, res) {
   logger.error(err);
