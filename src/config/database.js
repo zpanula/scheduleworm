@@ -1,3 +1,7 @@
 import { Sequelize } from 'sequelize';
 
-export default new Sequelize('sqlite::memory:', { logging: false });
+export default new Sequelize('database', 'username', 'password', {
+  dialect: 'sqlite',
+  storage: 'db/development.sqlite',
+  logging: false,
+});
