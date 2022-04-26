@@ -2,8 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import User from './user-model.js';
-import logger from '../config/logger.js';
-import AppError from '../config/error.js';
+import { AppError, logger } from '../config/index.js';
 
 /**
  * Creates a new user
