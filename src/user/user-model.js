@@ -70,14 +70,11 @@ export const userSchema = Joi.object({
   username: Joi.string().min(3).max(25).required(),
 });
 
-export const loginSchema = Joi.object({
-  username: Joi.string().min(3).max(25).required(),
+export const loginSchema = userSchema.keys({
   password: Joi.string().min(5).max(255).required(),
 });
 
-export const registerSchema = Joi.object({
-  username: Joi.string().min(3).max(25).required(),
+export const registerSchema = loginSchema.keys({
   email: Joi.string().min(5).max(255).required().email(),
-  password: Joi.string().min(5).max(255).required(),
   isAdmin: Joi.boolean(),
 });
