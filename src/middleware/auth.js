@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import 'dotenv/config';
-import { userService } from '../user/index.js';
-import { AppError } from '../config/index.js';
+import { hasPermission } from '../user/user-service.js';
+import AppError from '../config/error.js';
 
 export function authenticate(req, res, next) {
   const token = req.cookies.access_token;
@@ -26,7 +26,7 @@ export function authorize(req, res, next) {
   if (!username)
     throw new AppError(StatusCodes.FORBIDDEN, 'User is not logged in.');
 
-  if (!userService.hasPermission(username)) {
+  if (!hasPermission(username)) {
     throw new AppError(StatusCodes.FORBIDDEN, 'User is not an admin.');
   }
 
