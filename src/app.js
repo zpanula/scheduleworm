@@ -1,5 +1,5 @@
 import express from 'express';
-import { StatusCodes } from 'http-status-codes';
+// import { StatusCodes } from 'http-status-codes';
 import cookieParser from 'cookie-parser';
 import sequelize from './config/database.js';
 import accounts from './user/auth/auth-handlers.js';
@@ -37,9 +37,9 @@ app.set('view engine', 'ejs');
 app.use(routeLogger);
 app.use(accounts);
 app.use('/user', users);
-app.use((req, res) => {
-  res.status(StatusCodes.NOT_FOUND).send('Not Found');
-});
+// app.use((req, res) => {
+//   res.status(StatusCodes.NOT_FOUND).send('Not Found');
+// });
 app.use(async (err, req, res) => {
   await handleError(err, res);
 });
