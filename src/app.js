@@ -1,5 +1,5 @@
 import express from 'express';
-// import { StatusCodes } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import cookieParser from 'cookie-parser';
 import sequelize from './config/database.js';
 import accounts from './user/auth/auth-handlers.js';
@@ -24,6 +24,10 @@ await sequelize
 
 const app = express();
 
+app.get('/', (req, res) => {
+  res.render('pages/index');
+});
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(
@@ -37,15 +41,12 @@ app.set('view engine', 'ejs');
 app.use(routeLogger);
 app.use(accounts);
 app.use('/user', users);
-// app.use((req, res) => {
-//   res.status(StatusCodes.NOT_FOUND).send('Not Found');
-// });
-app.use(async (err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use(async (err, req, res, next) => {
   await handleError(err, res);
 });
-
-app.get('/', (req, res) => {
-  res.render('pages/index');
+app.use((req, res) => {
+  res.status(StatusCodes.NOT_FOUND).send('Not Found');
 });
 
 const port = process.env.PORT || 3000;
