@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+    <link rel="stylesheet" href="/css/schedule.css" />
+  </head>
+  <body>
+    <%- include('../partials/nav'); %>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Sunday<span class="date" id="DATE_SUN"></span></th>
+          <th scope="col">Monday<span class="date" id="DATE_MON"></span></th>
+          <th scope="col">Tuesday<span class="date" id="DATE_TUE"></span></th>
+          <th scope="col">Wednesday<span class="date" id="DATE_WED"></span></th>
+          <th scope="col">Thursday<span class="date" id="DATE_THU"></span></th>
+          <th scope="col">Friday<span class="date" id="DATE_FRI"></span></th>
+          <th scope="col">Saturday<span class="date" id="DATE_SAT"></span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="color2" id="sunday"></td>
+          <td class="color1" id="monday"></td>
+          <td class="color2" id="tuesday"></td>
+          <td class="color1" id="wednesday"></td>
+          <td class="color2" id="thursday"></td>
+          <td class="color1" id="friday"></td>
+          <td class="color2" id="saturday"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <%- include('../partials/footer'); %>
+    <script src="/js/schedule.js"></script>
+  </body>
+</html>
