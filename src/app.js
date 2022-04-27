@@ -28,6 +28,10 @@ app.get('/', (req, res) => {
   res.render('pages/index');
 });
 
+app.get('/schedule', (req, res) => {
+  res.render('pages/schedule');
+});
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(
