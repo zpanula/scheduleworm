@@ -116,6 +116,98 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade"
+      id="editScheduleModal"
+      tabindex="-1"
+      aria-labelledby="editScheduleModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editScheduleModal">Schedule time</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onclick="newShift.clear();"
+            ></button>
+          </div>
+          <form action="/newshift" method="post">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputNewShiftUsername">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newShiftUsername"
+                  name="newShiftUsername"
+                  readonly
+                />
+              </div>
+              <br>
+              <div class="form-group">
+                <label for="inputShiftDate">Date of shift</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="shiftDate"
+                  name="shiftDate"
+                />
+              </div>
+              <br>
+              <div class="flex-container">
+                <div class="flex-item">
+                  <div class="form-group">
+                    <label for="inputShiftStartTime">Start time of shift</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      id="shiftStartTime"
+                      name="shiftStartTime"
+                    />
+                  </div>
+                </div>
+                <div class="flex-item">
+                  <div class="form-group">
+                    <label for="inputShiftEndTime">End time of shift</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      id="shiftEndTime"
+                      name="shiftEndTime"
+                    />
+                  </div>
+                </div>
+              </div>
+              <br><br>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  onclick="newShift.clear();"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  id="submitNewTask"
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="/js/management.js"></script>
     <%- include('../partials/footer'); %>
   </body>
 </html>

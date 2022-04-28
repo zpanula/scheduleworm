@@ -5,16 +5,28 @@
   <td>
     <div class="flex-container">
       <div class="flex-item">
-        <button type="submit" class="btn btn-warning">
+        <button title="Edit user" type="submit" class="btn btn-warning">
           <i class="fa-regular fa-pen-to-square"></i>
         </button>
       </div>
       <div class="flex-item">
         <form action="/user/delete/<%= user.username %>" method="post">
-          <button type="submit" class="btn btn-danger">
+          <button title="Delete user" type="submit" class="btn btn-danger">
             <i class="far fa-trash-alt"></i>
           </button>
         </form>
+      </div>
+      <div class="flex-item">
+        <button
+          title="Make schedule"
+          type="button"
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#editScheduleModal"
+          onclick="newShift.storeUser('<%= user.username %>');updateNewShiftModalValues(newShift.username);"
+        >
+          <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
   </td>
