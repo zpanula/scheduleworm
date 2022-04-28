@@ -3,13 +3,19 @@
   <td><%= user.email %></td>
   <td><%= user.isAdmin %></td>
   <td>
-    <button type="submit" class="btn btn-warning">
-      <i class="fa-regular fa-pen-to-square"></i>
-    </button>
-    <form action="/user/delete/<%= user.username %>" method="post">
-      <button type="submit" class="btn btn-danger">
-        <i class="far fa-trash-alt"></i>
-      </button>
-    </form>
+    <div class="flex-container">
+      <div class="flex-item">
+        <button type="submit" class="btn btn-warning">
+          <i class="fa-regular fa-pen-to-square"></i>
+        </button>
+      </div>
+      <div class="flex-item">
+        <form action="/user/delete/<%= user.username %>" method="post">
+          <button type="submit" class="btn btn-danger">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </form>
+      </div>
+    </div>
   </td>
 </tr>

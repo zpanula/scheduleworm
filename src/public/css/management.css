@@ -1,0 +1,8 @@
+.flex-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flex-item {
+  text-align: center;
+}
