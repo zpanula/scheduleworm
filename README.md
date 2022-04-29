@@ -10,7 +10,8 @@ Scheduleworm is a free and open-source employee scheduling platform for budding 
 
 ```bash
 npm install
-npm start
+npm run build
+npm run start
 ```
 
 The server runs on port 3000.
