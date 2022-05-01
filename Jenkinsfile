@@ -1,11 +1,7 @@
 pipeline {
 
-    agent {
-        docker {
-          image 'node:16'
-          args '-p 3000:3000'
-      }
-    }
+    agent any
+    tools { nodejs "node" }
 
     environment {
         CI = 'true'
@@ -26,9 +22,9 @@ pipeline {
         stage('Build') {
             steps {
                 sh """
+                echo "Building project"
                 npm install
                 npm run build
-                echo "Building project"
                 """
             }
         }
@@ -36,8 +32,8 @@ pipeline {
         stage('Test') {
             steps {
                 sh """
-                npm run test
                 echo "Testing code"
+                npm run test
                 """
             }
         }
