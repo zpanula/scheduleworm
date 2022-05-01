@@ -1,6 +1,9 @@
 pipeline {
 
     agent any
+    options {
+        skipDefaultCheckout(true)
+    }
     tools { nodejs "node" }
 
     environment {
@@ -11,6 +14,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                cleanWs()
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
@@ -44,6 +48,14 @@ pipeline {
                 npm run test
                 """
             }
+        }
+    }
+      post {
+        always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
         }
     }
 }
