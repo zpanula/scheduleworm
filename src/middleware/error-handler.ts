@@ -1,6 +1,6 @@
 import logger from '../config/logger.js';
 
-export default function handleError(err, res) {
+export default function handleError(err: any, res?: any) {
   logger.error(err);
 
   if (!err.isOperational) {

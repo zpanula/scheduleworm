@@ -34,7 +34,7 @@ router.post('/register', validate(registerSchema), async (req, res) => {
 
   try {
     await create(username, email, password);
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(
       StatusCodes.INTERNAL_SERVER_ERROR,
       'Account creation failed.'
@@ -58,7 +58,7 @@ router.post('/login', validate(loginSchema), async (req, res) => {
         secure: process.env.NODE_ENV === 'production',
       })
       .send('Logged in successfully.');
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 });

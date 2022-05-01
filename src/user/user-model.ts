@@ -6,7 +6,15 @@ import sequelize from '../config/database.js';
 import logger from '../config/logger.js';
 import AppError from '../config/error.js';
 
-class User extends Model {}
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+}
+
+export class User extends Model {}
 
 export default User.init(
   {
@@ -47,7 +55,7 @@ export default User.init(
   {
     sequelize,
     hooks: {
-      beforeCreate: async (user) => {
+      beforeCreate: async (user: InstanceType<typeof User>) => {
         const hashedPassword = await bcrypt.hash(
           user.password,
           bcrypt.genSaltSync(8)
@@ -62,7 +70,7 @@ export default User.init(
 try {
   await User.sync();
   logger.debug('User table (re)created.');
-} catch (err) {
+} catch (err: any) {
   throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
 }
 
