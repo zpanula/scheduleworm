@@ -9,26 +9,28 @@ import logger from './config/logger.js';
 import routeLogger from './middleware/logger.js';
 import handleError from './middleware/error-handler.js';
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: any) => {
   handleError(err);
 });
 
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', (err: any) => {
   handleError(err);
 });
 
-await sequelize
-  .authenticate()
-  .then(logger.info('Connected to SQLite.'))
-  .catch((err) => logger.error('Unable to connect to the database', err));
+try {
+  await sequelize.authenticate();
+  logger.info('Connected to SQLite.');
+} catch (err) {
+  logger.error('Unable to connect to the database', err);
+}
 
 const app = express();
 
-app.get('/', (req, res) => {
+app.get('/', (req: any, res: any) => {
   res.render('pages/index');
 });
 
-app.get('/schedule', (req, res) => {
+app.get('/schedule', (req: any, res: any) => {
   res.render('pages/schedule');
 });
 
@@ -45,11 +47,12 @@ app.set('view engine', 'ejs');
 app.use(routeLogger);
 app.use(accounts);
 app.use('/user', users);
-// eslint-disable-next-line no-unused-vars
-app.use(async (err, req, res, next) => {
-  await handleError(err, res);
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: any, req: any, res: any, next: any): void => {
+  handleError(err, res);
 });
-app.use((req, res) => {
+app.use((req: any, res: any) => {
   res.status(StatusCodes.NOT_FOUND).send('Not Found');
 });
 

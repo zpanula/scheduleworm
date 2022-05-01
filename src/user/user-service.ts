@@ -1,49 +1,38 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
-import User from './user-model.js';
+import { User } from './user-model.js';
 import logger from '../config/logger.js';
 import AppError from '../config/error.js';
 
-/**
- * Creates a new user
- * @param {string} email
- * @param {string} password
- * @return {Object}
- */
-export async function create(username, email, password) {
+export async function create(
+  username: string,
+  email: string,
+  password: string
+): Promise<Object> {
   const user = User.build({ username, email, password });
 
   try {
     await user.save();
     logger.info(`Created user ${username} : ${email}`);
     return user;
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
-/**
- * Returns a single user
- * @param {string} id
- * @return {Object}
- */
-export async function read(username) {
+export async function read(username: string) {
   try {
     const user = await User.findOne({
       where: { username },
       attributes: ['id', 'username', 'email', 'isAdmin'],
     });
-    return user ?? null;
-  } catch (err) {
+    return user;
+  } catch (err: any) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
-/**
- * Returns array of users
- * @return {Array.<Object>}
- */
 export async function readAll() {
   try {
     const users = await User.findAll({
@@ -51,92 +40,73 @@ export async function readAll() {
     });
     logger.debug('Read all users', users);
     return users;
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
-/**
- * Returns a single user
- * @param {string} username
- * @return {Object}
- */
-export async function readByEmail(email) {
+export async function readByEmail(email: string) {
   try {
     const user = await User.findOne({
       where: { email },
       attributes: ['id', 'username', 'email', 'isAdmin'],
     });
     return user;
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
-/**
- * Generates a JWT token from a user
- * @param {Object} user
- * @return {string}
- */
-function generateAuthToken(user) {
+function generateAuthToken(user: InstanceType<typeof User>): string {
   const token = jwt.sign(
     { id: user.id, username: user.username },
-    process.env.API_SECRET_KEY
+    process.env.API_SECRET_KEY as string
   );
   logger.debug('Generated new JWT token.', token);
   return token;
 }
 
-/**
- * Authenticates a user
- * @param {string} username
- * @param {string} password
- * @return {string} - JWT token
- */
-export async function login(username, password) {
+export async function login(
+  username: string,
+  password: string
+): Promise<string> {
   const user = await User.findOne({ where: { username } });
-
-  const validPassword = bcrypt.compare(password, user.password);
-  if (!validPassword)
+  if (!user)
     throw new AppError(
       StatusCodes.BAD_REQUEST,
       'Invalid username or password.'
     );
-  logger.info(`Successful login from ${user.username}`);
 
-  return generateAuthToken(user);
+  try {
+    const validPassword = bcrypt.compare(password, user.password);
+    if (!validPassword) logger.info(`Successful login from ${user.username}`);
+
+    return generateAuthToken(user);
+  } catch (err: any) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      'Invalid username or password.'
+    );
+  }
 }
 
-/**
- * Deletes a user
- * @param {string} username - Username
- * @return {Object}
- */
-export async function remove(username) {
+export async function remove(username: string): Promise<number> {
   try {
     return await User.destroy({ where: { username } });
-  } catch (err) {
+  } catch (err: any) {
     throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 }
 
-/**
- * Changes a user's password
- * @param {string} username
- * @param {string} newPassword
- * @return {Object}
- */
-export async function update(username, newPassword) {
+export async function update(
+  username: string,
+  newPassword: string
+): Promise<void> {
   await User.update({ password: newPassword }, { where: { username } });
   logger.debug(`Changed password of ${username}`);
 }
 
-/**
- * Checks user authorization
- * @param {string} username
- * @return {boolean}
- */
-export async function hasPermission(username) {
+export async function hasPermission(username: string): Promise<boolean> {
   const user = await read(username);
   if (!user) return false;
 
