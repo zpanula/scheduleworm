@@ -1,30 +1,18 @@
 pipeline {
 
     agent {
-        node {
-            label 'main'
-        }
+        docker { image 'node:16' +
+        args '-p 3000:3000 '
+      }
     }
 
-    options {
-        buildDiscarder logRotator(
-                    daysToKeepStr: '16',
-                    numToKeepStr: '10'
-            )
+    environment {
+        CI = 'true'
     }
 
     stages {
 
-        stage('Cleanup Workspace') {
-            steps {
-                cleanWs()
-                sh """
-                echo "Cleaned Up Workspace For Project"
-                """
-            }
-        }
-
-        stage('Code Checkout') {
+        stage('Checkout') {
             steps {
                 checkout([
                     $class: 'GitSCM',
@@ -34,7 +22,7 @@ pipeline {
             }
         }
 
-        stage('Building') {
+        stage('Build') {
             steps {
                 sh """
                 npm install
@@ -44,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Code Analysis') {
+        stage('Test') {
             steps {
                 sh """
                 npm run test
