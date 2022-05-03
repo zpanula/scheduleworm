@@ -133,7 +133,6 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onclick="newShift.clear();"
             ></button>
           </div>
           <form action="/newshift" method="post">
@@ -189,7 +188,6 @@
                   type="button"
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
-                  onclick="newShift.clear();"
                 >
                   Close
                 </button>
@@ -208,5 +206,6 @@
       </div>
     </div>
     <%- include('../partials/footer'); %>
+    <script src="/js/management.js"></script>
   </body>
 </html>
