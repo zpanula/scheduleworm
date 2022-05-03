@@ -41,8 +41,8 @@ app.use(
     extended: true,
   })
 );
-app.use(express.static('./src/public'));
-app.set('views', './src/views');
+app.use(express.static('./dist/public'));
+app.set('views', './dist/views');
 app.set('view engine', 'ejs');
 app.use(routeLogger);
 app.use(accounts);
