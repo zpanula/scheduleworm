@@ -8,7 +8,9 @@
     "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "npm run lint && jest --passWithNoTests",
-    "build": "tsc && cp -r ./src/views ./dist && cp -r ./src/public/css ./dist/public/css",
+    "clean": "rm -rf ./dist",
+    "copy-files": "cp -r ./src/views ./dist && cp -r ./src/public/css ./dist/public/css",
+    "build": "npm run clean && tsc && npm run copy-files",
     "start": "node dist/app.js",
     "dev": "node --loader ts-node/esm src/app.ts"
   },
