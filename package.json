@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "npm run lint && jest --passWithNoTests",
     "clean": "rm -rf ./dist",
-    "copy-files": "cp -r ./src/views ./dist && cp -r ./src/public/css ./dist/public/css && cp ./src/public/js/{*.js,*.map} ./dist/public/js",
+    "copy-files": "cp -r ./src/views ./dist && cp -r ./src/public/* ./dist/public/",
     "build": "npm run clean && tsc && npm run copy-files",
     "start": "node dist/app.js",
     "dev": "node --loader ts-node/esm src/app.ts"
