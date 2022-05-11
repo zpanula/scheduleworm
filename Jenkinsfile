@@ -1,3 +1,4 @@
+@Library("nodejs-pipeline-library") _
 pipeline {
 
     agent any
@@ -11,40 +12,28 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 cleanWs()
                 checkout scm
             }
         }
-
         stage('Install Dependencies') {
             steps {
-                sh """
-                echo "Installing dependencies"
-                npm install
-                """
+              nodeInstallDependencies()
             }
         }
-
-        stage('Build') {
-            steps {
-                sh """
-                echo "Building project"
-                npm run build
-                """
-            }
-        }
-
         stage('Test') {
             steps {
-                sh """
-                echo "Testing code"
-                npm run test
-                """
+              nodeTest()
             }
         }
+        stage('Build') {
+            steps {
+              typescriptBuild()
+            }
+        }
+
     }
     post {
         always {
